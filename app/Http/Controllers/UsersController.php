@@ -14,4 +14,23 @@ class UsersController extends Controller {
     public function show(User $user) {
         return view('users.show', compact('user'));
     }
+
+    public function store(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|confirmed|min:6'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // danger, warning, success, info 这四个键名在 Bootstrap 分别具有不同样式展现效果
+        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+        return redirect()->route('users.show', [$user]);
+        // equivalent to redirect()->route('users.show', [$user->id]);
+    }
 }
