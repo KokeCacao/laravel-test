@@ -28,9 +28,15 @@ class UsersController extends Controller {
             'password' => bcrypt($request->password),
         ]);
 
+        Auth::login($user);
         // danger, warning, success, info 这四个键名在 Bootstrap 分别具有不同样式展现效果
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
         return redirect()->route('users.show', [$user]);
         // equivalent to redirect()->route('users.show', [$user->id]);
+    }
+    public function destroy() {
+        Auth::logout();
+        session()->flash('success', '您已成功退出！');
+        return redirect('login');
     }
 }
