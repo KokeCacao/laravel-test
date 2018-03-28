@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
 use Auth;
+use Mail;
 
 class UsersController extends Controller {
 
@@ -13,7 +14,7 @@ class UsersController extends Controller {
         //auth is redirrection
         //except require logging in
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);
         $this->middleware('guest', [
             'only' => ['create']
@@ -45,11 +46,39 @@ class UsersController extends Controller {
             'password' => bcrypt($request->password),
         ]);
 
+        $this->sendEmailConfirmationTo($user);
+        session()->flash('success', '验证邮件已发送到你的注册邮箱上，请注意查收否则无法登陆。');
+        return redirect('/');
+
         Auth::login($user);
         // danger, warning, success, info 这四个键名在 Bootstrap 分别具有不同样式展现效果
-        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
-        return redirect()->route('users.show', [$user]);
+        //session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+        //return redirect()->route('users.show', [$user]);
         // equivalent to redirect()->route('users.show', [$user->id]);
+    }
+    protected function sendEmailConfirmationTo($user) {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'i@KokeCacao.me';
+        $name = 'Koke_Cacao';
+        $to = $user->email;
+        $subject = "感谢注册！请确认你的邮箱。";
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
+    }
+    public function confirmEmail($token) {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->uuid = $user->activation_token;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success', '恭喜你，激活成功！');
+        return redirect()->route('users.show', [$user]);
     }
     public function destroy() {
         // store info for signout

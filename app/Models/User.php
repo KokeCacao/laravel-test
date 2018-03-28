@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -21,6 +22,17 @@ class User extends Authenticatable {
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    // boot 方法会在用户模型类完成初始化之后进行加载
+    public static function boot() {
+        parent::boot();
+
+        // create event
+        static::creating(function ($user) {
+            // $user->activation_token = str_random(30);
+            $user->activation_token = Str::orderedUuid();
+        });
+    }
 
     public function gravatar($size = '100') {
         $hash = md5(strtolower(trim($this->attributes['email'])));
