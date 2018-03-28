@@ -9,6 +9,7 @@
     <nav>
       <ul>
         <li><a href="{{ route('about') }}">关于</a></li>
+        <li><?php echo 'PHP: ' . phpversion();?>
       </ul>
     </nav>
   </footer>
