@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
+use Auth;
 
 class UsersController extends Controller {
 
@@ -81,5 +82,10 @@ class UsersController extends Controller {
         session()->flash('success', '个人资料更新成功！');
 
         return redirect()->route('users.show', $user->id);
+    }
+    public function index() {
+        // paginate works with {!! $users->render() !!}
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
     }
 }
