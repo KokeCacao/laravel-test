@@ -18,4 +18,4 @@ let mix = require('laravel-mix');
 
 // TO USE LESS
 mix.js('resources/assets/js/app.js', 'public/js')
-.less('node_modules/amazeui/less/amazeui.less', 'public/css');
+.less('resources/assets/less/app.less', 'public/css');
