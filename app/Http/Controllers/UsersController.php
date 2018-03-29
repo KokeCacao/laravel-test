@@ -59,15 +59,18 @@ class UsersController extends Controller {
     protected function sendEmailConfirmationTo($user) {
         $view = 'emails.confirm';
         $data = compact('user');
-        //$from = 'i@KokeCacao.me';
-        //$name = 'Koke_Cacao';
+        $from = 'i@KokeCacao.me';
+        $name = 'Koke_Cacao';
         $to = $user->email;
         $subject = "感谢注册！请确认你的邮箱。";
 
         Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
-            //$message->from($from, $name)->to($to)->subject($subject);
-            $message->->to($to)->subject($subject);
+            $message->from($from, $name)->to($to)->subject($subject);
         });
+
+        // Mail::send($view, $data, function ($message) use ($name, $to, $subject) {
+        //     $message->from($name)->to($to)->subject($subject);
+        // });
     }
     public function confirmEmail($token) {
         $user = User::where('activation_token', $token)->firstOrFail();
