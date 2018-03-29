@@ -8,8 +8,8 @@
     </small>
     <nav>
       <ul>
-        <li><a href="{{ route('about') }}">关于</a></li>
-        <li><?php echo 'PHP: ' . phpversion();?>
+        <li><a href="{{ route('about') }}">关于;</a></li>
+        <li><?php echo '听说你想要黑掉服务器? PHP: ' . phpversion();?>
       </ul>
     </nav>
   </footer>

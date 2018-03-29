@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>@yield('title', 'Sample App') - Laravel 入门教程</title>
+    <link rel="alternate icon" type="image/x-icon" href="{{ URL::asset('i/favicon.ico') }}"/>
+    <link rel="stylesheet" href="//cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/>
     <link rel="stylesheet" href="/css/app.css">
-  </head>
-  <body>
+</head>
+<body>
     @include('layouts._header')
 
     <div class="container">
@@ -12,9 +14,9 @@
         @include('shared._messages')
         @yield('content')
         @include('layouts._footer')
-      </div>
     </div>
+</div>
 
-    <script src="/js/app.js"></script>
-  </body>
+<script src="/js/app.js"></script>
+</body>
 </html>

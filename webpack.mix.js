@@ -11,5 +11,11 @@ let mix = require('laravel-mix');
  |
  */
 
+
+// TO USE SASS
+// mix.js('resources/assets/js/app.js', 'public/js')
+//    .sass('resources/assets/sass/app.scss', 'public/css');
+
+// TO USE LESS
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+.less('node_modules/amazeui/less/amazeui.less', 'public/css');
